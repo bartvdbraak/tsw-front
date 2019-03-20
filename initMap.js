@@ -1,3 +1,56 @@
+var base_server = "https://tsw.valutadev.com";
+var keyword_id = 3;
+
+function cityProcessor(city) {
+    var request = new XMLHttpRequest();
+  
+    request.open('GET', base_server+'/keywords/'+keyword_id+'/cities/'+city.id+'/sentiment/', true);
+  
+    request.onload = function () {
+      // Begin accessing JSON data here
+      var data = JSON.parse(this.response);
+      if (request.status >= 200 && request.status < 400) {
+          console.log(city.city, data)
+          
+          var data = [{
+            values: [19, 26, 55],
+            labels: ['Residential', 'Non-Residential', 'Utility'],
+            type: 'pie'
+          }];
+          
+          Plotly.newPlot('plot', data, {}, {showSendToCloud:true});
+          
+          data.forEach(tweet => {
+            var sentiment = tweet.sentiment_score < -0.25 ? 'negative' : tweet.sentiment_score > 0.25 ? 'positive' : 'neutral'
+            
+            var marker = new google.maps.Marker({
+                  position: new google.maps.LatLng(tweet.location.longitude, tweet.location.latitude),
+                  icon: icons[sentiment],
+                  map: map
+                });
+            
+  
+            var content =  "Sentiment score: " + tweet.sentiment_score
+            var infowindow = new google.maps.InfoWindow()
+            
+  
+  
+            google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){ 
+              return function() {
+                infowindow.setContent(content);
+                infowindow.open(map,marker);
+              };
+            })(marker,content,infowindow));     
+  
+          });
+        } else {
+          console.log('error');
+        }
+    }
+  
+    request.send();  
+}
+
 function initMap() {
   var geocoder = new google.maps.Geocoder;
   var map = new google.maps.Map(
@@ -100,34 +153,13 @@ function initMap() {
 
   var request = new XMLHttpRequest();
 
-  request.open('GET', './output.json', true);
+  request.open('GET', base_server+'/keywords/'+keyword_id+'/cities/', true);
 
   request.onload = function () {
-    // Begin accessing JSON data here
     var data = JSON.parse(this.response);
     if (request.status >= 200 && request.status < 400) {
-        data.forEach(tweet => {
-          var sentiment = tweet.sentiment_score < -0.25 ? 'negative' : tweet.sentiment_score > 0.25 ? 'positive' : 'neutral'
-          
-          var marker = new google.maps.Marker({
-                position: new google.maps.LatLng(tweet.location.longitude, tweet.location.latitude),
-                icon: icons[sentiment],
-                map: map
-              });
-          
-
-          var content =  "Sentiment score: " + tweet.sentiment_score
-          var infowindow = new google.maps.InfoWindow()
-          
-
-
-          google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){ 
-            return function() {
-              infowindow.setContent(content);
-              infowindow.open(map,marker);
-            };
-          })(marker,content,infowindow));     
-
+        data.forEach(city => {
+            cityProcessor(city);
         });
       } else {
         console.log('error');
