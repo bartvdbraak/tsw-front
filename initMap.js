@@ -1,48 +1,76 @@
 var base_server = "https://tsw.valutadev.com";
 var keyword_id = 3;
 
-function cityProcessor(city) {
+function cityProcessor(city, map) {
+    var iconBase = './icons/';
+    var icons = {
+        negative: {
+            scaledSize: new google.maps.Size(32, 32),
+            url: iconBase + 'negative.png',
+        },
+        neutral: {
+            scaledSize: new google.maps.Size(32, 32),
+            url: iconBase + 'neutral.png'
+        },
+        positive: {
+            scaledSize: new google.maps.Size(32, 32),
+            url: iconBase + 'positive.png'
+        }
+    };
+
     var request = new XMLHttpRequest();
   
     request.open('GET', base_server+'/keywords/'+keyword_id+'/cities/'+city.id+'/sentiment/', true);
   
     request.onload = function () {
-      // Begin accessing JSON data here
-      var data = JSON.parse(this.response);
-      if (request.status >= 200 && request.status < 400) {
-          console.log(city.city, data)
-          
-          var data = [{
-            values: [19, 26, 55],
-            labels: ['Residential', 'Non-Residential', 'Utility'],
-            type: 'pie'
-          }];
-          
-          Plotly.newPlot('plot', data, {}, {showSendToCloud:true});
-          
-          data.forEach(tweet => {
-            var sentiment = tweet.sentiment_score < -0.25 ? 'negative' : tweet.sentiment_score > 0.25 ? 'positive' : 'neutral'
+        // Begin accessing JSON data here
+        var data = JSON.parse(this.response);
+        if (request.status >= 200 && request.status < 400) {
+            console.log(city.city, data)
+            var scores = [], positive = 0, neutral = 0, negative = 0;
             
+
+            data.forEach(entry => {
+                scores.push(entry.score);
+                if (entry.label === 'positive') {
+                    positive++;
+                } else if (entry.label === 'neutral') {
+                    neutral++;
+                } else if (entry.label === 'negative') {
+                    negative++;
+                }
+            });
+
+            sum = scores.reduce((previous, current) => current += previous);
+            let avg_sent = sum / scores.length;
+            sentiment = avg_sent < -0.25 ? 'negative' : avg_sent > 0.25 ? 'positive' : 'neutral';
+
+
+            console.log(avg_sent, sentiment, scores, positive, neutral, negative)
             var marker = new google.maps.Marker({
-                  position: new google.maps.LatLng(tweet.location.longitude, tweet.location.latitude),
+                  position: new google.maps.LatLng(city.location.latitude, city.location.longitude),
                   icon: icons[sentiment],
                   map: map
                 });
             
-  
-            var content =  "Sentiment score: " + tweet.sentiment_score
+            var content =  "<p>Average Sentiment score: " + avg_sent + "</p>"
             var infowindow = new google.maps.InfoWindow()
             
-  
-  
+            var data = [{
+                values: [positive, neutral, negative],
+                labels: ['Positive', 'Neutral', 'Negative'],
+                type: 'pie'
+            }];
+
             google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){ 
               return function() {
+                Plotly.newPlot('plot', data, {}, {showSendToCloud:true});
                 infowindow.setContent(content);
                 infowindow.open(map,marker);
               };
             })(marker,content,infowindow));     
-  
-          });
+            
+            
         } else {
           console.log('error');
         }
@@ -135,22 +163,6 @@ function initMap() {
       });
   // var marker = new google.maps.Marker({position: {lat: 0.0, lng: 0.0}, map: map});
 
-  var iconBase = './icons/';
-  var icons = {
-    negative: {
-      scaledSize: new google.maps.Size(32, 32),
-      url: iconBase + 'negative.png',
-    },
-    neutral: {
-      scaledSize: new google.maps.Size(32, 32),
-      url: iconBase + 'neutral.png'
-    },
-    positive: {
-      scaledSize: new google.maps.Size(32, 32),
-      url: iconBase + 'positive.png'
-    }
-  };
-
   var request = new XMLHttpRequest();
 
   request.open('GET', base_server+'/keywords/'+keyword_id+'/cities/', true);
@@ -159,7 +171,7 @@ function initMap() {
     var data = JSON.parse(this.response);
     if (request.status >= 200 && request.status < 400) {
         data.forEach(city => {
-            cityProcessor(city);
+            cityProcessor(city, map);
         });
       } else {
         console.log('error');
