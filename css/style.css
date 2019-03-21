@@ -1,4 +1,5 @@
 body {
+      overflow: hidden;
       margin: 0;
       font-size: 28px;
       font-family: 'Quicksand', sans-serif;
@@ -14,10 +15,59 @@ body {
 }
     
 #container {
+      overflow: hidden;
       width: 100%; 
       height: 100%;
 }
-    
+
+#plot-holder {
+      z-index: 100;
+      width: 100%;
+      bottom: -430px;
+      height: 450px;
+      position: absolute;
+      background-color: rgb(245, 245, 245);
+      -webkit-transition: bottom 0.6s ease-out;
+      -moz-transition: bottom 0.6s ease-out;
+      -o-transition: bottom 0.6s ease-out;
+      transition: bottom 0.6s ease-out;}
+
+#plot-open {
+      position: absolute;
+      left: 50%;
+      top: -40px;
+      width: 48px;
+      height: auto;
+}
+
+#plot-close {
+      display: none;
+      position: absolute;
+      left: 50%;
+      top: -40px;
+      width: 48px;
+      height: auto;
+}
+.open {
+      width: 100%;
+      height: 100%;
+      -moz-transform: scaleY(-1);
+      -o-transform: scaleY(-1);
+      -webkit-transform: scaleY(-1);
+      transform: scaleY(-1);
+      filter: FlipZ;
+      -ms-filter: "FlipZ";
+}
+
+.close {
+      width: 100%;
+      height: 100%;
+}
+
+#plot {
+      overflow: hidden;
+}
+
 #navbar {
       z-index: 100;
       width: 100%;
@@ -68,14 +118,3 @@ body {
 .sticky + .content {
       padding-top: 60px;
     }
-
-
-#plot {
-      z-index: 100;
-      width: 100%;
-      bottom: 0;
-      max-height: 40vh;
-      position: absolute;
-      overflow: hidden;
-      background-color: rgb(245, 245, 245);
-}

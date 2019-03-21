@@ -15,10 +15,10 @@
         <div id="map"></div>
         <div id="navbar">
             <img src="img/logo.png">
-            <a href="trump.html">Trump</a>
+            <a class="active" href="trump.html">Trump</a>
             <a href="brexit.html">Brexit</a>
             <a href="#">About</a>
-            <a class="active" href="index.html">Home</a>
+            <a href="index.html">Home</a>
         </div>
         <div id="plot-holder">
             <div id="plot-open" onclick="plotOpen();"><img class="open" src="img/chevron.png"></div>
@@ -27,15 +27,14 @@
         </div>
     </div>
     <script>
-    var keyword_id = null;
+    var keyword_id = 3;
     </script>
-    <script src="js/layout.js"></script>
     <script src="js/plotly-latest.min.js"></script>
     <script src="js/numeric.min.js"></script>
     <script src="js/initMap.js"></script>
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA9p6nb_ySzhyJl4WCcyVyVLDNne1sKyLo&callback=initMap"></script>
-    
+    <script src="js/layout.js"></script>
 </body>
 
 </html>

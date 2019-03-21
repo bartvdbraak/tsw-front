@@ -1,8 +1,7 @@
 var base_server = "https://tsw.valutadev.com";
-var keyword_id = 3;
 
 function cityProcessor(city, map) {
-    var iconBase = './icons/';
+    var iconBase = './img/icons/';
     var icons = {
         negative: {
             scaledSize: new google.maps.Size(32, 32),
@@ -23,13 +22,13 @@ function cityProcessor(city, map) {
     request.open('GET', base_server+'/keywords/'+keyword_id+'/cities/'+city.id+'/sentiment/', true);
   
     request.onload = function () {
-        // Begin accessing JSON data here
+        // Begin accessing sentiment data per city here
         var data = JSON.parse(this.response);
         if (request.status >= 200 && request.status < 400) {
-            console.log(city.city, data)
+            //console.log(city.city, data)
             var scores = [], positive = 0, neutral = 0, negative = 0;
             
-
+            //counting each data entry
             data.forEach(entry => {
                 scores.push(entry.score);
                 if (entry.label === 'positive') {
@@ -45,26 +44,49 @@ function cityProcessor(city, map) {
             let avg_sent = sum / scores.length;
             sentiment = avg_sent < -0.25 ? 'negative' : avg_sent > 0.25 ? 'positive' : 'neutral';
 
-
-            console.log(avg_sent, sentiment, scores, positive, neutral, negative)
+            //console.log(avg_sent, sentiment, scores, positive, neutral, negative)
             var marker = new google.maps.Marker({
                   position: new google.maps.LatLng(city.location.latitude, city.location.longitude),
                   icon: icons[sentiment],
                   map: map
                 });
             
-            var content =  "<p>Average Sentiment score: " + avg_sent + "</p>"
+            var content =  "<h2>"+city.city+ "</h2><p>Cluster: " +city.cluster+ "<br>Avg. Sentiment score: " + avg_sent.toFixed(2) + "<br>Positive count: " + positive + "<br>Neutral count: " + neutral + "<br>Negative count: " + negative + "</p>" 
             var infowindow = new google.maps.InfoWindow()
             
-            var data = [{
-                values: [positive, neutral, negative],
-                labels: ['Positive', 'Neutral', 'Negative'],
-                type: 'pie'
-            }];
+            var data = [
+                
+                {
+                    y: scores,
+                    name: "Boxplot Sentiment Scores",
+                    domain: {
+                        row: 0,
+                        column: 0
+                      },
+                    type: 'box'
+                },
+                {
+                    values: [positive, neutral, negative],
+                    labels: ['Positive', 'Neutral', 'Negative'],
+                    domain: {
+                        row: 0,
+                        column: 1
+                      },
+                    hoverinfo: 'all',
+                    type: 'pie'
+                }
+            ];
+
+            var layout = {
+                title: 'Sentiment Analysis of '+city.city,
+                showlegend: true,
+                grid: {rows: 1, columns: 2}
+              };
 
             google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){ 
               return function() {
-                Plotly.newPlot('plot', data, {}, {showSendToCloud:true});
+                Plotly.newPlot('plot', data, layout, {showSendToCloud:true});
+                plotOpen();
                 infowindow.setContent(content);
                 infowindow.open(map,marker);
               };
