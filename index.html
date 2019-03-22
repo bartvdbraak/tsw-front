@@ -7,34 +7,42 @@
 
     <title>Twitter Sentiment</title>
     <link href="https://fonts.googleapis.com/css?family=Quicksand:400,500,700" rel="stylesheet">
+    <link href="css/fontawesome-free-5.8.1-all.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
 </head>
 
 <body>
     <div id="container">
         <div id="map"></div>
-        <div id="navbar">
+        <div class="topnav" id="myTopnav">
             <img src="img/logo.png">
-            <a href="trump.html">Trump</a>
-            <a href="brexit.html">Brexit</a>
+            <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+                <i class="fas fa-bars"></i>
+            </a>
+            <a href="index.html" class="active">Home</a>
+            <a href="#">Topics</a>
+            <a href="#">Requests</a>
             <a href="#">About</a>
-            <a class="active" href="index.html">Home</a>
         </div>
+
         <div id="plot-holder">
-            <div id="plot-open" onclick="plotOpen();"><img class="open" src="img/chevron.png"></div>
-            <div id="plot-close" onclick="plotClose();"><img class="close" src="img/chevron.png"></i></i></div>
+            <div id="plot-open" onclick="plotOpen();"><span id="chevron"><i class="fas fa-chevron-up"></i></span></div>
+            <div id="plot-close" onclick="plotClose();"><span id="chevron"><i class="fas fa-chevron-down"></i></span></div>
             <div id="plot"></div>
         </div>
     </div>
-    <script>
-    var keyword_id = null;
-    </script>
+    <section class="main">
+        <form class="search" method="post" action="index.html" autocomplete="off">
+            <input type="text" name="q" id="textInput" autocomplete="nope" onkeyup="updateNewSuggestion()" placeholder="Enter topic or keyword for suggestions.." />
+            <ul class="results" >
+            </ul>
+        </form>
+    </section>
     <script src="js/layout.js"></script>
     <script src="js/plotly-latest.min.js"></script>
     <script src="js/numeric.min.js"></script>
     <script src="js/initMap.js"></script>
-    <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA9p6nb_ySzhyJl4WCcyVyVLDNne1sKyLo&callback=initMap"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA9p6nb_ySzhyJl4WCcyVyVLDNne1sKyLo&callback=initMap"></script>
     
 </body>
 
