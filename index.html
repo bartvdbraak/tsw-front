@@ -3,15 +3,15 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' />
 
-    <title>Twitter Sentiment</title>
+    <title>Sentiment Cow</title>
     <link href="https://fonts.googleapis.com/css?family=Quicksand:400,500,700" rel="stylesheet">
     <link href="css/fontawesome-free-5.8.1-all.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
 </head>
 
-<body>
+<body onload="topicSuggestions();">
     <div id="container">
         <div id="map"></div>
         <div class="topnav" id="myTopnav">
@@ -24,13 +24,8 @@
             <a href="#">Requests</a>
             <a href="#">About</a>
         </div>
-
-        <div id="plot-holder">
-            <div id="plot-open" onclick="plotOpen();"><span id="chevron"><i class="fas fa-chevron-up"></i></span></div>
-            <div id="plot-close" onclick="plotClose();"><span id="chevron"><i class="fas fa-chevron-down"></i></span></div>
-            <div id="plot"></div>
-        </div>
     </div>
+    
     <section class="main">
         <form class="search" method="post" action="index.html" autocomplete="off">
             <input type="text" name="q" id="textInput" autocomplete="nope" onkeyup="updateNewSuggestion()" placeholder="Enter topic or keyword for suggestions.." />
@@ -38,6 +33,11 @@
             </ul>
         </form>
     </section>
+    <div id="plot-holder">
+        <div id="plot-open" onclick="plotOpen();"><span id="chevron"><i class="fas fa-chevron-up"></i></span></div>
+        <div id="plot-close" onclick="plotClose();"><span id="chevron"><i class="fas fa-chevron-down"></i></span></div>
+        <div id="plot"></div>
+    </div>
     <script src="js/layout.js"></script>
     <script src="js/plotly-latest.min.js"></script>
     <script src="js/numeric.min.js"></script>

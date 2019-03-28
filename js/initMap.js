@@ -72,6 +72,9 @@ function cityProcessor(city, map) {
                         row: 0,
                         column: 1
                     },
+                    marker: {
+                        colors: ['rgb(64, 206, 24)','rgb(206, 127, 24)','rgb(206, 33, 24)']
+                      },                    
                     hoverinfo: 'all',
                     type: 'pie'
                 }
@@ -85,7 +88,7 @@ function cityProcessor(city, map) {
 
             google.maps.event.addListener(marker, 'click', (function (marker, content, infowindow) {
                 return function () {
-                    Plotly.newPlot('plot', data, layout, { showSendToCloud: true });
+                    Plotly.newPlot('plot', data, layout, { responsive: true, showSendToCloud: true });
                     plotOpen();
                     infowindow.setContent(content);
                     infowindow.open(map, marker);
@@ -202,7 +205,6 @@ function initMap() {
 }
 
 function setKeyword(id) {
-    console.log('try')
     keyword_id = id;
     initMap();
 }
