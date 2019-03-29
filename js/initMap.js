@@ -1,6 +1,7 @@
 var base_server = "https://tsw.valutadev.com";
 var keyword_id = null;
 
+
 function cityProcessor(city, map) {
     var iconBase = './img/icons/';
     var icons = {
@@ -73,8 +74,8 @@ function cityProcessor(city, map) {
                         column: 1
                     },
                     marker: {
-                        colors: ['rgb(64, 206, 24)','rgb(206, 127, 24)','rgb(206, 33, 24)']
-                      },                    
+                        colors: ['rgb(64, 206, 24)', 'rgb(206, 127, 24)', 'rgb(206, 33, 24)']
+                    },
                     hoverinfo: 'all',
                     type: 'pie'
                 }
@@ -207,4 +208,23 @@ function initMap() {
 function setKeyword(id) {
     keyword_id = id;
     initMap();
+
+    var request = new XMLHttpRequest();
+
+    request.open('GET', base_server + '/keywords/', true);
+
+    request.onload = function () {
+        var data = JSON.parse(this.response);
+        if (request.status >= 200 && request.status < 400) {
+            data.forEach(keyword => {
+                if (keyword.id === keyword_id) {
+                    document.getElementById("curr-top").innerText = keyword.name;
+                }
+            });
+        } else {
+            console.log('error');
+        }
+    }
+
+    request.send();
 }
