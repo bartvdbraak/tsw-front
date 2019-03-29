@@ -1,7 +1,6 @@
 var base_server = "https://tsw.valutadev.com";
 var keyword_id = null;
 
-
 function cityProcessor(city, map) {
     var iconBase = './img/icons/';
     var icons = {
@@ -226,5 +225,22 @@ function setKeyword(id) {
         }
     }
 
+    request.send();
+}
+
+function randomTopic() {
+    var request = new XMLHttpRequest();
+  
+    request.open('GET', base_server + '/keywords/', true);
+  
+    request.onload = function () {
+      var data = JSON.parse(this.response);
+      if (request.status >= 200 && request.status < 400) {
+        setKeyword(data[Math.floor(Math.random() * data.length)].id)
+      } else {
+        console.log('error');
+      }
+    }
+  
     request.send();
 }

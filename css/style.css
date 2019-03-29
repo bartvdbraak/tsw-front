@@ -1,9 +1,12 @@
 body {
-      overflow: hidden;
       margin: 0;
       font-size: 28px;
       font-family: 'Quicksand', sans-serif;
     }
+
+* {
+    box-sizing: border-box;
+}
 
 #map {
       z-index: 95;
@@ -15,9 +18,52 @@ body {
 }
     
 #container {
-      overflow: hidden;
       width: 100%; 
       height: 100%;
+}
+
+.top-row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.top-col {
+    position: relative;
+    z-index: 105;
+    text-align: center;
+    float: left;
+    padding: 10px;
+    height: 60px;
+}
+
+.outer {
+    width: 25%;
+}
+
+.inner {
+    width: 50%;
+}
+
+.logo {
+    max-width: 100%;
+    max-height:100%;
+}
+
+#curr-top {
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.current-topic {
+    position: absolute;
+    margin: 24px;
+    font-weight: 500;
+    z-index: 105;
+    text-align: right;
+    right: 0;
+    height: 66px;
+    overflow: hidden;
 }
 
 #plot-holder {
@@ -61,46 +107,6 @@ body {
       overflow: hidden;
 }
 
-.logo {
-      position: absolute;
-      margin: 10px;
-      z-index: 105;
-      height: 66px;
-      overflow: hidden;
-}
-.logo img {
-      max-height:100%;
-      width: auto;
-}
-
-.current-topic {
-      position: absolute;
-      margin: 24px;
-      font-weight: 500;
-      z-index: 105;
-      text-align: right;
-      right: 0;
-      height: 66px;
-      overflow: hidden;
-}
-
-.container, .main {
-      display:block;
-      position: absolute;
-      z-index: 100;
-      position: absolute;
-      margin-left: auto;
-      margin-right: auto;
-      left: 0;
-      right: 0;
-      top: 30px;
-      color: #404040;
-      font-family: 'HelveticaNeue', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      font-size: 13px;
-      font-weight: normal;
-      line-height: 20px;
-}
-
 input {
     font-family: 'HelveticaNeue', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-size: 13px;
@@ -110,7 +116,7 @@ input {
 .search {
     position: relative;
     margin: 0 auto;
-    width: 300px;
+    max-width:300px;
 }
 
 .search input {
@@ -149,7 +155,10 @@ input {
 .search .results {
     display: none;
     position: absolute;
-    top: 35px;
+    font-family: 'HelveticaNeue', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    text-align: left;
+    font-size: 14px;
+    top: 50px;
     left: 0;
     right: 0;
     z-index: 100;
