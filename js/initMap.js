@@ -1,19 +1,38 @@
 var base_server = "https://tsw.valutadev.com";
 var keyword_id = null;
 
+function getIconSize() {
+    if (window.innerWidth < 500) {
+        return 16;
+    }
+    else if (window.innerWidth < 900) {
+        return 24;
+    }
+    else if (window.innerWidth < 1600) {
+        return 32;
+    }
+    else {
+        return 48;
+    }
+}
+
 function cityProcessor(city, map) {
     var iconBase = './img/icons/';
+    
+    var size = getIconSize();
+    console.log(window.innerWidth, size);
+
     var icons = {
         negative: {
-            scaledSize: new google.maps.Size(32, 32),
+            scaledSize: new google.maps.Size(size, size),
             url: iconBase + 'negative.png',
         },
         neutral: {
-            scaledSize: new google.maps.Size(32, 32),
+            scaledSize: new google.maps.Size(size, size),
             url: iconBase + 'neutral.png'
         },
         positive: {
-            scaledSize: new google.maps.Size(32, 32),
+            scaledSize: new google.maps.Size(size, size),
             url: iconBase + 'positive.png'
         }
     };
