@@ -40,13 +40,10 @@ function keywordRequest(name, twitter_query = null, keyword_regex = null, cities
 
 function topicSuggestions() {
   var base_server = "https://tsw.valutadev.com";
-  var content = `<li><a id="suggestion-link" href="#">Add new topic: <span style="font-weight: bold;" id="suggestion-text"></span><br /><span>Default city list: <span style="font-weight: bold;">cities_global</span></></span></a></li>`
 
   ul = document.getElementsByClassName('results')[0];
 
   ul.innerHTML = "";
-
-  ul.insertAdjacentHTML('beforeend', content);
 
   var request = new XMLHttpRequest();
 
@@ -56,24 +53,22 @@ function topicSuggestions() {
     var data = JSON.parse(this.response);
     if (request.status >= 200 && request.status < 400) {
       data.forEach(keyword => {
-        var content = `<li><a href="javascript:setKeyword(` + keyword.id + `);"><span style="font-weight: bold;">` + keyword.name + `</span><br /><span>Uses the <span style="font-weight: bold;">` + keyword.cities_list + `</span> city list.</span></a></li>`;
-        ul.insertAdjacentHTML('beforeend', content);
+        if (keyword.enabled === true) {
+          var content = `<li><a href="javascript:setKeyword(` + keyword.id + `);"><span style="font-weight: bold;">` + keyword.name + `</span><br /><span>Uses the <span style="font-weight: bold;">` + keyword.cities_list + `</span> city list.</span></a></li>`;
+          ul.insertAdjacentHTML('afterbegin', content);
+        }
       });
+      var content = `<li><a id="suggestion-link" href="#">Add new topic: <span style="font-weight: bold;" id="suggestion-text"></span><br /><span>Default city list: <span style="font-weight: bold;">cities_global</span></></span></a></li>`
+      ul.insertAdjacentHTML('afterbegin', content);
     } else {
       console.log('error');
     }
   }
 
   request.send();
-}
 
-function myFunction() {
-  var x = document.getElementById("myTopnav");
-  if (x.className === "topnav") {
-    x.className += " responsive";
-  } else {
-    x.className = "topnav";
-  }
+  
+
 }
 
 function plotOpen() {

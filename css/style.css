@@ -1,7 +1,8 @@
 body {
       margin: 0;
-      font-size: 28px;
       font-family: 'Quicksand', sans-serif;
+      overflow: hidden;
+
     }
 
 * {
@@ -18,8 +19,8 @@ body {
 }
     
 #container {
-      width: 100%; 
-      height: 100%;
+    width: 100%; 
+    height: 100%;
 }
 
 .top-row:after {
@@ -33,8 +34,8 @@ body {
     z-index: 105;
     text-align: center;
     float: left;
-    padding: 10px;
-    height: 60px;
+    padding: 5px;
+    height: 50px;
 }
 
 .outer {
@@ -44,26 +45,21 @@ body {
 .inner {
     width: 50%;
 }
+.main {
+    margin-top: 5px;
+}
 
 .logo {
     max-width: 100%;
     max-height:100%;
+    
 }
 
 #curr-top {
+    margin-top: 10px;
     font-weight: 700;
     text-transform: uppercase;
-}
-
-.current-topic {
-    position: absolute;
-    margin: 24px;
-    font-weight: 500;
-    z-index: 105;
-    text-align: right;
-    right: 0;
-    height: 66px;
-    overflow: hidden;
+    font-size: 3vmin;
 }
 
 #plot-holder {
@@ -89,7 +85,8 @@ body {
 }
 
 #chevron i {
-      text-shadow: 0 0 5px #ddd;
+    font-size: 28px;
+    text-shadow: 0 0 5px #ddd;
 }
 
 #plot-close {

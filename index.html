@@ -19,7 +19,7 @@
             </div>
             <div class="top-col inner">
                 <section class="main">
-                    <form class="search" method="post" action="index.html" autocomplete="off">
+                    <form class="search" method="#" action="#" autocomplete="off" onsubmit="return false;">
                         <input type="text" name="q" id="textInput" autocomplete="nope" onkeyup="updateNewSuggestion()"
                             placeholder="Search or request new topics.." />
                         <ul class="results">
@@ -31,13 +31,14 @@
                 <span id='curr-top'></span>
             </div>
         </div>
+        <div id="plot-holder">
+            <div id="plot-open" onclick="plotOpen();"><span id="chevron"><i class="fas fa-chevron-up"></i></span></div>
+            <div id="plot-close" onclick="plotClose();"><span id="chevron"><i class="fas fa-chevron-down"></i></span></div>
+            <div id="plot"></div>
+        </div>
     </div>
     
-    <div id="plot-holder">
-        <div id="plot-open" onclick="plotOpen();"><span id="chevron"><i class="fas fa-chevron-up"></i></span></div>
-        <div id="plot-close" onclick="plotClose();"><span id="chevron"><i class="fas fa-chevron-down"></i></span></div>
-        <div id="plot"></div>
-    </div>
+    
     <script src="js/layout.js"></script>
     <script src="js/plotly-latest.min.js"></script>
     <script src="js/numeric.min.js"></script>

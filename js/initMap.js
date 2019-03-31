@@ -17,7 +17,6 @@ function cityProcessor(city, map) {
             url: iconBase + 'positive.png'
         }
     };
-
     var request = new XMLHttpRequest();
 
     request.open('GET', base_server + '/keywords/' + keyword_id + '/cities/' + city.id + '/sentiment/', true);
@@ -27,16 +26,18 @@ function cityProcessor(city, map) {
         var data = JSON.parse(this.response);
         if (request.status >= 200 && request.status < 400) {
             //console.log(city.city, data)
+
+
             var scores = [], positive = 0, neutral = 0, negative = 0;
 
             //counting each data entry
             data.forEach(entry => {
                 scores.push(entry.score);
-                if (entry.label === 'positive') {
+                if (entry.sentiment === 'positive') {
                     positive++;
-                } else if (entry.label === 'neutral') {
+                } else if (entry.sentiment === 'neutral') {
                     neutral++;
-                } else if (entry.label === 'negative') {
+                } else if (entry.sentiment === 'negative') {
                     negative++;
                 }
             });
@@ -52,7 +53,12 @@ function cityProcessor(city, map) {
                 map: map
             });
 
-            var content = "<h2>" + city.city + "</h2><p>Cluster: " + city.cluster + "<br>Avg. Sentiment score: " + avg_sent.toFixed(2) + "<br>Positive count: " + positive + "<br>Neutral count: " + neutral + "<br>Negative count: " + negative + "</p>"
+            var content = "<h2>" + city.name + "</h2><p>" 
+                        // + "Cluster: " + city.cluster 
+                        + "Avg. Sentiment score: " + avg_sent.toFixed(2) 
+                        + "<br>Positive count: " + positive 
+                        + "<br>Neutral count: " + neutral 
+                        + "<br>Negative count: " + negative + "</p>";
             var infowindow = new google.maps.InfoWindow()
 
             var data = [
@@ -81,7 +87,7 @@ function cityProcessor(city, map) {
             ];
 
             var layout = {
-                title: 'Sentiment Analysis of ' + city.city,
+                title: 'Sentiment Analysis of ' + city.name,
                 showlegend: true,
                 grid: { rows: 1, columns: 2 }
             };
@@ -229,6 +235,7 @@ function setKeyword(id) {
 }
 
 function randomTopic() {
+    var enabled_keywords = [];
     var request = new XMLHttpRequest();
   
     request.open('GET', base_server + '/keywords/', true);
@@ -236,11 +243,15 @@ function randomTopic() {
     request.onload = function () {
       var data = JSON.parse(this.response);
       if (request.status >= 200 && request.status < 400) {
-        setKeyword(data[Math.floor(Math.random() * data.length)].id)
+        data.forEach(keyword => {
+            if (keyword.enabled === true) {
+                enabled_keywords.push(keyword.id);
+            }
+        });
+        setKeyword(enabled_keywords[Math.floor(Math.random() * enabled_keywords.length)])
       } else {
         console.log('error');
       }
-    }
-  
+    }  
     request.send();
 }
